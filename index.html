@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="zh-cn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="lib/css/normalize.css">
+    <link rel="stylesheet" href="css/main.css">
+    <title>备忘录</title>
+</head>
+<body>
+    <div id="main">
+        <div class="navbar">
+            <h1>备忘录</h1>
+        </div>
+        <div class="header">
+            吃饭睡觉打豆豆......
+        </div>
+        <form @submit.prevent="merge" id="task-form">
+            <div class="wrap">
+                <div class="inputbar clearf">
+                    <input v-model="current.title" id="task-input" type="text" autocomplete="off">
+                    <button @click="toggle_edit">...</button>
+                </div>
+                <div v-if="isEdit" class="detail">
+                    <textarea v-model="current.desc"></textarea>
+                    <input type="datetime-local" v-model="current.alert_at">
+                    <button class="primary" type="submit">提交</button>
+                </div>
+            </div>
+        </form>
+        <div class="task-list">
+            <div class="wrap">
+                未完成
+                <task :todo= "todo"
+                      v-for="todo in list"
+                      v-if="!todo.completed"
+                ></task>
+                <!--
+                组件父子通信:todo = "todo" 把等号右边的todo(属于父组件)赋值给左边的todo(属于子组件)，
+                子组件的component在props属性的数组值中添加todo键名，子组件即可拿到了键名名为todo的值.
+                -->
+            </div>
+        </div>
+        <div class="task-list">
+            <div class="wrap">
+                <div class="segment-title">已完成</div>
+                <div v-if="todo.completed" v-for="todo in list" class="item completed">
+                    <div @click="toggle_complete(todo.id)" class="toggle-complete"></div>
+                    <span class="title">
+                        {{todo.title}}
+                    </span>
+                    <button @click="remove(todo.id)">删除</button>
+                    <button @click="toggle_detail(todo.id)">详情</button>
+                    <div class="detail" v-if="todo.show_detail">
+                        {{todo.desc || '暂无详情'}}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="footer">
+            <div class="wrap">
+            </div>
+        </div>
+    </div>
+    <audio id="alert-sound">
+        <source src="./sound/alert_sound.mp3">
+    </audio>
+    <template id="task-tpl">
+        <div class="item">
+            <div @click="action('toggle_complete',todo.id)" class="toggle-complete"></div>
+            <span class="title">{{todo.title}}</span>
+            <button @click="action('remove',todo.id)">删除</button>
+            <button @click="action('set_current',todo)">更新</button>
+            <button @click="action('toggle_detail',todo.id)">详情</button>
+            <div class="detail" v-if="todo.show_detail">
+                {{todo.desc || '暂无详情'}}
+            </div>
+        </div>
+    </template>
+    <!--input关闭表单输入建议：设置其autocomplete属性为off -->
+    <script src="lib/js/vue.js"></script>
+    <script src="js/myStorage.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>

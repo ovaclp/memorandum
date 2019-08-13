@@ -1,0 +1,40 @@
+<style>
+    .clearf:before,
+    .clearf:after{
+        content: '';
+        clear: both;
+        display: block;
+    }
+    .inputbar{
+        border: 2px solid #39c2e2;
+        background: #39c2e2;
+        display: block;
+    }
+    .inputbar input,
+    .inputbar button{
+        display: block;
+        float: left;
+        outline: 0;
+        border: 0;
+        padding: 10px;
+    }
+    .inputbar input{
+        width: 80%;
+    }
+    .inputbar input:focus{
+        box-shadow: inset 0 0 2px 2px rgba(0,0,0,.2);
+    }
+
+    .inputbar button{
+        width: 20%;
+        background: #39c2e2;
+        color: #ffffff;
+    }
+    .inputbar button:hover{
+        background: #1997b5;
+    }
+</style>
+<div class="inputbar clearf">
+    <input type="text">
+    <button>...</button>
+</div>
